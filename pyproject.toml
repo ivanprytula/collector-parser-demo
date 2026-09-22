@@ -23,6 +23,7 @@ dev = [
     "responses>=0.25",
     "ruff>=0.16.8",
     "ty>=0.0.83",
+    "pre-commit>=4.0",
 ]
 
 [tool.pytest.ini_options]

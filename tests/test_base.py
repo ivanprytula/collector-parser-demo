@@ -2,10 +2,26 @@
 
 import http
 
+import requests
 import responses
+from requests.adapters import HTTPAdapter
 from requests_ratelimiter import LimiterSession
+from urllib3.util.retry import Retry
 
 from collectors.base import DEFAULT_TIMEOUT, RateLimiterConfig, build_session
+
+
+def _retry_policy(session: requests.Session, url: str = "https://example.com") -> Retry:
+    """Fetch the Retry policy mounted on `session`'s adapter for `url`.
+
+    `session.get_adapter()` is typed to return the abstract `BaseAdapter`;
+    narrowing to `HTTPAdapter` here keeps that assertion in one place
+    instead of repeating an isinstance check in every test.
+    """
+    adapter = session.get_adapter(url)
+    assert isinstance(adapter, HTTPAdapter)
+    assert adapter.max_retries is not None
+    return adapter.max_retries
 
 
 class TestBuildSession:
@@ -28,41 +44,35 @@ class TestBuildSession:
     def test_session_has_retry_configuration(self):
         """Session adapters should have Retry configured."""
         session = build_session("test")
-        adapter = session.get_adapter("https://example.com")
+        retry = _retry_policy(session)
 
-        assert adapter.max_retries is not None
-        assert adapter.max_retries.total == 5
+        assert retry.total == 5
 
     def test_retry_includes_jitter(self):
         """Retry should be configured with jitter for backoff."""
         session = build_session("test")
-        adapter = session.get_adapter("https://example.com")
-        retry = adapter.max_retries
+        retry = _retry_policy(session)
 
         assert retry.backoff_jitter == 0.1
 
     def test_retry_respects_retry_after_header(self):
         """Retry should respect Retry-After header from server."""
         session = build_session("test")
-        adapter = session.get_adapter("https://example.com")
-        retry = adapter.max_retries
+        retry = _retry_policy(session)
 
         assert retry.respect_retry_after_header is True
 
     def test_retry_status_forcelist_includes_429(self):
         """Retry should include 429 (Too Many Requests) in retry list."""
         session = build_session("test")
-        adapter = session.get_adapter("https://example.com")
-        retry = adapter.max_retries
+        retry = _retry_policy(session)
 
         assert http.HTTPStatus.TOO_MANY_REQUESTS in retry.status_forcelist
 
     def test_retry_status_forcelist_includes_5xx(self):
         """Retry should include 5xx server errors in retry list."""
         session = build_session("test")
-        adapter = session.get_adapter("https://example.com")
-        retry = adapter.max_retries
-        status_list = retry.status_forcelist
+        status_list = _retry_policy(session).status_forcelist
 
         assert http.HTTPStatus.INTERNAL_SERVER_ERROR in status_list
         assert http.HTTPStatus.BAD_GATEWAY in status_list
@@ -72,10 +82,10 @@ class TestBuildSession:
     def test_retry_allowed_methods_is_get_only(self):
         """Retry should only apply to GET requests."""
         session = build_session("test")
-        adapter = session.get_adapter("https://example.com")
-        retry = adapter.max_retries
+        allowed_methods = _retry_policy(session).allowed_methods
 
-        assert "GET" in retry.allowed_methods
+        assert allowed_methods is not None
+        assert "GET" in allowed_methods
 
     def test_default_timeout_is_tuple(self):
         """DEFAULT_TIMEOUT should be a tuple (connect, read)."""
@@ -107,10 +117,9 @@ class TestBuildSession:
         """Rate limiting doesn't drop the retry adapter or User-Agent header."""
         rate_limit = RateLimiterConfig(max_rate=5, time_period=30)
         session = build_session("test-agent", rate_limit=rate_limit)
-        adapter = session.get_adapter("https://example.com")
 
         assert session.headers["User-Agent"] == "test-agent"
-        assert adapter.max_retries.total == 5
+        assert _retry_policy(session).total == 5
 
 
 class TestSessionRetryBehavior:
