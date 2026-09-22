@@ -1,0 +1,13 @@
+name: sans_isc
+description: SANS Internet Storm Center full RSS feed (diary entries)
+source_url: https://isc.sans.edu/rssfeed_full.xml
+format: xml (rss 2.0)
+auth: none
+rate_limit: none published; shared retry policy still applies defensively
+pagination: none — full feed returned per request, most-recent-first
+output_model: parsers.models.SecurityAdvisory
+mapping_file: mappings/sans_isc.yaml
+notes: >
+  Parsed with defusedxml (XXE-safe). No CVSS/severity field on this source
+  — those fields are left null on the normalized model. pubDate is RFC 822,
+  not ISO 8601, hence the separate datetime_rfc822 coercer in the mapper.

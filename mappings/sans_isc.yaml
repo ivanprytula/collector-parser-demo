@@ -1,0 +1,19 @@
+external_id:
+  source: guid
+  type: str
+  required: true
+
+title:
+  source: title
+  type: str
+  required: true
+
+description:
+  source: description
+  type: str
+  required: true
+
+published_at:
+  source: pubDate
+  type: datetime_rfc822
+  required: true

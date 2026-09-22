@@ -1,0 +1,29 @@
+external_id:
+  source: id
+  type: str
+  required: true
+
+title:
+  source: id
+  type: str
+  required: true
+
+description:
+  source: descriptions.0.value
+  type: str
+  required: true
+
+published_at:
+  source: published
+  type: datetime
+  required: true
+
+severity:
+  source: metrics.cvssMetricV2.0.baseSeverity
+  type: str
+  required: false
+
+cvss_score:
+  source: metrics.cvssMetricV2.0.cvssData.baseScore
+  type: float
+  required: false

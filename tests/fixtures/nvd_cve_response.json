@@ -1,0 +1,79 @@
+{
+  "resultsPerPage": 2,
+  "startIndex": 0,
+  "totalResults": 396088,
+  "format": "NVD_CVE",
+  "version": "2.0",
+  "timestamp": "2026-09-22T15:27:22.702",
+  "vulnerabilities": [
+    {
+      "cve": {
+        "id": "CVE-1999-0095",
+        "sourceIdentifier": "cve@mitre.org",
+        "published": "1988-10-01T04:00:00.000",
+        "lastModified": "2026-06-16T21:47:34.460",
+        "vulnStatus": "Modified",
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "The debug command in Sendmail is enabled, allowing attackers to execute commands as root."
+          },
+          {
+            "lang": "es",
+            "value": "El comando de depuración de Sendmail está activado."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:L/Au:N/C:C/I:C/A:C",
+                "baseScore": 10.0
+              },
+              "baseSeverity": "HIGH"
+            }
+          ]
+        },
+        "references": [
+          {"url": "http://seclists.org/fulldisclosure/2019/Jun/16", "source": "cve@mitre.org"},
+          {"url": "http://www.securityfocus.com/bid/1", "source": "cve@mitre.org"}
+        ]
+      }
+    },
+    {
+      "cve": {
+        "id": "CVE-1999-0082",
+        "sourceIdentifier": "cve@mitre.org",
+        "published": "1988-11-11T05:00:00.000",
+        "lastModified": "2026-06-16T21:47:32.300",
+        "vulnStatus": "Modified",
+        "descriptions": [
+          {
+            "lang": "en",
+            "value": "CWD ~root command in ftpd allows root access."
+          }
+        ],
+        "metrics": {
+          "cvssMetricV2": [
+            {
+              "source": "nvd@nist.gov",
+              "type": "Primary",
+              "cvssData": {
+                "version": "2.0",
+                "vectorString": "AV:N/AC:L/Au:N/C:C/I:C/A:C",
+                "baseScore": 10.0
+              },
+              "baseSeverity": "HIGH"
+            }
+          ]
+        },
+        "references": [
+          {"url": "http://www.alw.nih.gov/Security/Docs/admin-guide-to-cracking.101.html", "source": "cve@mitre.org"}
+        ]
+      }
+    }
+  ]
+}

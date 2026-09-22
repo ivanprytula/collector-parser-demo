@@ -1,0 +1,13 @@
+name: nvd_cve
+description: NIST National Vulnerability Database, CVE API 2.0
+source_url: https://services.nvd.nist.gov/rest/json/cves/2.0
+format: json
+auth: none (API key optional, raises rate limit from 5/30s to 50/30s)
+rate_limit: 5 requests per rolling 30s window, unauthenticated
+pagination: resultsPerPage / startIndex, offset-based
+output_model: parsers.models.SecurityAdvisory
+mapping_file: mappings/nvd_cve.yaml
+notes: >
+  Retries on 429/5xx via collectors.base's shared session (backoff_factor
+  1.5, respects Retry-After). Severity/CVSS are optional on the normalized
+  model — very old CVEs sometimes lack a CVSS v2/v3 score.

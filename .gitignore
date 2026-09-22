@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+nvd_sample.json
+isc_sample.xml
+
+.coverage
+htmlcov/
+*.db
+.remember/

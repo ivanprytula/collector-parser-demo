@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="/css/rss.css" type="text/css"?>
+<rss version="2.0"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/"
+    xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>SANS Internet Storm Center, InfoCON: green</title>
+<link>https://isc.sans.edu</link>
+<description><![CDATA[SANS Internet Storm Center - Cooperative Cyber Security Monitor]]></description>
+<lastBuildDate>Tue, 22 Sep 2026 15:40:03 +0000</lastBuildDate>
+<item>
+  <title><![CDATA[The Truth about GET and HTTP Standards, (Tue, Sep 22nd)]]></title>
+  <link>https://isc.sans.edu/diary/rss/33358</link>
+  <guid>https://isc.sans.edu/diary/rss/33358</guid>
+  <description><![CDATA[<p>On Friday, Xavier talked about the newly introduced HTTP Query method.</p>]]></description>
+  <pubDate>Tue, 22 Sep 2026 14:48:38 GMT</pubDate>
+</item>
+<item>
+  <title><![CDATA[Scans for Sonicwall SSLVPN Continue, (Mon, Sep 21st)]]></title>
+  <link>https://isc.sans.edu/diary/rss/33352</link>
+  <guid>https://isc.sans.edu/diary/rss/33352</guid>
+  <description><![CDATA[<p>We continue to see elevated scan activity against Sonicwall SSLVPN endpoints.</p>]]></description>
+  <pubDate>Mon, 21 Sep 2026 09:12:00 GMT</pubDate>
+</item>
+</channel>
+</rss>
