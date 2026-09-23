@@ -28,7 +28,7 @@ dev = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "--cov=collectors --cov=parsers --cov-report=term-missing --cov-report=html"
+addopts = "--cov=collectors --cov=parsers --cov=db --cov-report=term-missing --cov-report=html"
 
 [tool.ruff]
 target-version = "py314"
