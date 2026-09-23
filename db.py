@@ -1,6 +1,7 @@
 """SQLite persistence for normalized advisories."""
 
 import sqlite3
+from contextlib import closing
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -12,7 +13,7 @@ def init_db(db_path: str | Path) -> None:
     db_path = Path(db_path)
     db_path.parent.mkdir(parents=True, exist_ok=True)
 
-    with sqlite3.connect(db_path) as conn:
+    with closing(sqlite3.connect(db_path)) as conn:
         conn.execute(
             """
             CREATE TABLE IF NOT EXISTS advisories (
@@ -38,7 +39,7 @@ def save_advisory(advisory: SecurityAdvisory, db_path: str | Path) -> None:
     db_path = Path(db_path)
     references_json = ";".join(advisory.references) if advisory.references else ""
 
-    with sqlite3.connect(db_path) as conn:
+    with closing(sqlite3.connect(db_path)) as conn:
         conn.execute(
             """
             INSERT OR REPLACE INTO advisories (
@@ -73,7 +74,7 @@ def list_advisories(db_path: str | Path, source: str | None = None) -> list[dict
     if not db_path.exists():
         return []
 
-    with sqlite3.connect(db_path) as conn:
+    with closing(sqlite3.connect(db_path)) as conn:
         conn.row_factory = sqlite3.Row
         if source:
             rows = conn.execute(
@@ -93,7 +94,7 @@ def count_advisories(db_path: str | Path, source: str | None = None) -> int:
     if not db_path.exists():
         return 0
 
-    with sqlite3.connect(db_path) as conn:
+    with closing(sqlite3.connect(db_path)) as conn:
         if source:
             count = conn.execute(
                 "SELECT COUNT(*) FROM advisories WHERE source = ?", (source,)
